@@ -1,0 +1,231 @@
+---
+title: "HW 1"
+author: "Philipp Ross"
+date: 2017-01-12
+output: html_document
+---
+
+```{r read-chunk, include=FALSE, cache=FALSE}
+knitr::read_chunk("chunks.R")
+source("../code/hw1/expgrowth.R")
+```
+
+```{r knitr-opts-chunk, include=FALSE}
+```
+
+**Last updated:** `r Sys.Date()`
+
+**Code version:** `r workflowr::extract_commit(".", 1)$sha1`
+ 
+## 1. Statistics and Differential Equations Review
+
+### Review Problem 1
+
+**(a)**
+
+This is the same as a successful trail of a Bernoulli random variable, ten times in a row with probability $p = 0.5$.
+
+```{r}
+p <- 0.5
+p^10
+```
+
+**(b)**
+
+```{r}
+p <- 0.63095735
+p^10
+```
+
+**(c)**
+
+If $X$ ~ $Binom(n, p)$, then $E[X] = np$.
+
+### Review Problem 2
+
+**(a)**
+
+```{r}
+ppois(0, 1.5, lower.tail = T)
+```
+
+**(b)**
+
+```{r}
+ppois(1, 1.5, lower.tail = T)
+```
+
+**(c)**
+
+The expectation of a Poisson random variable is the rate paramter, $\lambda = 1.5$. The standard deviation is the square root of the rate parameter, $\sqrt{\lambda} = 1.224745$.
+
+### Review Problem 3
+
+**(a)**
+
+$R = \frac{n(t + 1)}{n(t)}$
+
+**(b)**
+
+$R = \frac{n(1)}{n(0)} = \frac{\n(0)e^{r \cdot 1}}{n(0)} = e^{r}$
+
+## 2. Evolution of Antibiotic Resistance
+
+### Problem 1
+
+**(a)**
+
+```{r}
+simExpGrowth(1,100)
+```
+
+```{r}
+simExpGrowth(10,100)
+```
+
+```{r}
+simExpGrowth(100,100)
+```
+
+```{r}
+simExpGrowth(1000,100)
+```
+
+**(b)**
+
+```{r}
+simExpGrowth(1,1)
+```
+
+```{r}
+simExpGrowth(10,10)
+```
+
+```{r}
+simExpGrowth(100,100)
+```
+
+```{r}
+simExpGrowth(1000,1000)
+```
+
+The fraction of dead populations is less sensitive to the
+
+### Problem 2
+
+**(a)**
+
+this is the structure of $\beta$-lactamase with an inhibitor substrate known as imipenem. THe spheres in red are the residues that most commonly accumulate changes during development of resistance to antibiotics.
+
+<center>![Antibiotic Resistance Relevant Residues](../data/hw1/tem1-residues-highlighted.png)</center>
+
+**(b)**
+
+The residues closest to the substrate are amino acids 69 and 70 and the residue furthest from the substrate is amino acid 182.
+
+
+### Problem 3
+
+Once you run the script, the following is your output:
+
+```
+SingleLetterAlphabet() alignment with 125 rows and 287 columns
+-----------------------HPETLVKVKDAEDQLGARVGY...KHW TEM-1-imipenem-from-1BT5_PSE_File_Sequence
+--------------------------LADTVQGLEERLDARIGI...--- UniRef90_Q1YJJ5_38_293/1-256
+--------------------------LTQTITQIEQTLDARVGL...D-- UniRef90_A3VZZ2_27_282/1-256
+----------------------------AELAELERRYGARLGV...R-- UniRef90_H2K2N0_50_303/1-254
+------------------------QGVRAELRALESRHAARLGV...R-- UniRef90_H5XLN5_39_297/1-259
+---------------------------QGELRALEARHAARLGV...R-- UniRef90_H0K2N4_41_296/1-256
+-----------------------------RFAELETTSGARLGV...D-- UniRef90_Q9EZQ7_54_307/1-254
+-------------------------AATAEFAALEQRFGARLGV...--- UniRef90_Q5YXD6_53_309/1-257
+----------------------QPATLAAQLSALEASANGRLGV...AAW UniRef90_B8R7R2_34_296/1-263
+-------------------------QLETPFQSLEQQHRGRLGI...Q-- UniRef90_B3PDF2_31_288/1-258
+---------------------------QDRLAKLEQQLNGRLGV...EW- UniRef90_C0LNZ8_37_293/1-257
+------------------------PDAESRLATLERSAGGRLGV...--- UniRef90_Q470Y4_51_308/1-258
+-------------------------AAISKLEGVEGSSGARLGV...--- UniRef90_UPI0001744437_38_284/1-247
+-----------------------QQDASAQLAALEAASGSRLGV...--- UniRef90_B5L5U5_32_290/1-259
+---------------------------EAQLAALERSVGGRLGL...D-- UniRef90_C5CR04_40_295/1-256
+-------------------------DAARQIAALESGFGGRIGV...ATF UniRef90_F2LLP9_44_303/1-260
+------------------------------------RMRGRLGV...D-- UniRef90_E5AR55_83_329/1-247
+-----------------------HAAAQDRLAALESAAGGRLGV...--- UniRef90_H1S0N1_8_258/1-251
+...
+-------------------------QLNEDISLIEQQTSSRIGV...QKY UniRef90_D0MBV8_21_280/1-260
+Length of aligned sequences (including gaps): 287
+Number of sequences in the alignment: 125
+Wrote results to AlignmentAnalysis.txt
+Plotted histogram in SiteDiversityHist.png
+```
+
+**(a)**
+
+<center>![Site Diversity](../data/hw1/SiteDiversityHist.png)</center>
+
+Based on the plot, we can see that there around 14 invariant sites, or sites where there is but one unique amino acid within the alignment.
+
+**(b)**
+
+Once you modify the script, you can see that the following sites are invariant:
+
+```
+TEM-1-imipenem-from-1BT5_PSE_File_Sequence
+66 F
+70 S
+73 K
+81 L
+107 P
+125 A
+131 D
+134 A
+136 N
+157 D
+166 E
+179 D
+199 L
+236 G
+```
+
+**(c)**
+
+The spheres highlighted in blue are the conserved amino acids while the ones in red are those relevant to the accumulation of antiobiotic resistance are in red.
+
+<center>![Conserved Residues](../data/hw1/tem1-residues-conserved.png)</center>
+
+**(d)**
+
+The strongest noticeable relationship between the highly conserved residues and those involved in antibiotic resistance is that they only barely overlap. This suggests that those residues are highly invariant for a reason, such as that amino acid substitutions at those sites tend to be deleterious to organism fitness or have a negative consequences for protein function. It also indicates that by mutating the protein at residues that are not as highly conserved, the protein can avoid inhibition by imipenem.
+
+### Problem 4
+
+**(a)**
+
+On average, $10\mu$M ampicillin degrades at $0.1\mu Ms^{-1}$
+
+**(b)**
+
+```{r}
+t <- 1:1000
+k <- 0.01
+plot(t, 10*exp(-k*t), type="l", col="red", xlab="Time (s)", ylab="Amount")
+```
+
+**(c)**
+
+$k_{cat}$ is going to be $(10000 \cdot 0.01) - 0.01 = $`r (10000*0.01) - 0.01`.
+
+
+**(d)**
+
+$k_{m}$ is going to be $\frac{99.99 + 10}{1000} = $`r (99.99+10)/1000`
+
+**(e)**
+
+Now that the initial concentration include $\beta$-lactamase, the average degradation rate will be much faster. It will be:
+
+$$
+(9 \cdot 0.01) + (1 \cdot 100) = 100.09\mu Ms^{-1}
+$$
+
+## Session Information
+
+```{r session-info}
+```

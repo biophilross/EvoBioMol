@@ -1,11 +1,11 @@
-#!python3
+#!/home/rstudio/miniconda3/envs/evobiomol/bin/python3
 
 ###############################################################
-# NWV 6 Jan 2013                                            
-# This script will read in a multiple sequence alignment (MSA) in a 
-# user-specified format and return a histogram of the numbers 
-# of sites in the alignment with a specific number of         
-# alternative amino acids / nucleotides.                      
+# NWV 6 Jan 2013
+# This script will read in a multiple sequence alignment (MSA) in a
+# user-specified format and return a histogram of the numbers
+# of sites in the alignment with a specific number of
+# alternative amino acids / nucleotides.
 ###############################################################
 
 #updated 9 Jan 2014 MS
@@ -13,10 +13,13 @@
 #updated 24 Nov 2013 TNS
 #updated 03 Jan 2017 CGT <- update to 3.5
 
-
 import os, re, sys
 from Bio import AlignIO
-from matplotlib import pyplot
+
+# This tells matplotlib to not use XWindows as the backend
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
 
 # "chdir" = "change directory" Tell Python to change where it
 # will look for files. For example, you'll probably be storing
@@ -26,16 +29,16 @@ from matplotlib import pyplot
 # you can write the path above as ~/Mo/Dropbox/evol-biol-mol/homeworks
 
 ##base_directory = os.path.expanduser("~/Dropbox/evol-biol-mol/homeworks")
-base_directory = os.path.expanduser("~/Dropbox (Drummond Lab)/evol-biol-mol/homeworks")
+base_directory = os.path.expanduser("/home/rstudio/data/EvoBioMol/data/hw1/")
 os.chdir(base_directory)
 
 # Define a variable for each of your input and output files.
 # If you have your directory structured correctly, you should not
 # have to change these lines.
 
-alignment_filename = "hw1/data/TEM1_aln_with_PSE_seq.fa"
-results_filename = "hw1/results/AlignmentAnalysis.txt"
-histogram_filename = "hw1/results/SiteDiversityHist.png"
+alignment_filename = "TEM1_aln_with_PSE_seq.fa"
+results_filename = "AlignmentAnalysis.txt"
+histogram_filename = "SiteDiversityHist.png"
 
 # Open the results file so we can write ('w') to it. This statment
 # literally says that the variable 'results_file'  is the document
@@ -48,7 +51,7 @@ results_file = open(os.path.join(base_directory,results_filename),'w')
 # Use Biopython to read in the entire alignment. Read the Biopython
 # HOWTOs for the AlignIO module at http://biopython.org/wiki/AlignIO
 # This line essentially says "Use the AlignIO module to read the
-# 'alignment_file'(which is our sequence alignment in fasta # format) and 
+# 'alignment_file'(which is our sequence alignment in fasta # format) and
 # store that information in the variable 'alignment',which our script
 # can now go on and use.
 
@@ -76,7 +79,7 @@ print("Length of aligned sequences (including gaps): {}".format(aligned_seq_leng
 num_seqs = len(alignment)
 print("Number of sequences in the alignment: {}".format(num_seqs))
 
-# Print this information to our results file for safe keeping. 
+# Print this information to our results file for safe keeping.
 
 results_file.write("Alignment length: {L}\n".format(L=aligned_seq_length))
 results_file.write("Number of sequences in the alignment: {n}\n".format(n=num_seqs));
@@ -138,21 +141,20 @@ for site_number in range(aligned_seq_length):
         site_counts += [number_of_unique_aas]
 
         # identify sites with only one unique AA
-        #if number_of_unique_aas == 1:
-        #    print published_site_number, site_aas[published_sequence_index]
+        if number_of_unique_aas == 1:
+            print(published_site_number, site_aas[published_sequence_index])
 
-            
+
 results_file.write("number.of.aas\tnumber.of.sites\n")
 for ind in range(len(histogram)):
     results_file.write("%s\t%s\n" % (ind, histogram[ind]))
 # We're done with this file, so close it.
 results_file.close()
 print("Wrote results to " + results_filename)
-                         
-pyplot.hist(site_counts, bins=range(0,20,1), facecolor='blue')
-pyplot.xlabel('Number of unique amino acids')
-pyplot.ylabel('Count')
-pyplot.title('Frequency of Sites with a Given\nNumber of Amino Acids')
-pyplot.show() # Show this histogram live
-pyplot.savefig(histogram_filename)
+
+plt.hist(site_counts, bins=range(0,20,1), facecolor='blue')
+plt.xlabel('Number of unique amino acids')
+plt.ylabel('Count')
+plt.title('Frequency of Sites with a Given\nNumber of Amino Acids')
+plt.savefig(histogram_filename)
 print("Plotted histogram in " + histogram_filename)

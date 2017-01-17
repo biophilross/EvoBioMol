@@ -14,11 +14,11 @@ navbar:
   right:
     - icon: fa-github
       href: https://github.com/jdblischak/workflowr
-output:
-  html_document:
-    toc: true
-    toc_float: true
-    theme: lumen
-    highlight: textmate
-    include:
-      after_body: include/footer.html
+#output:
+#  html_document:
+#    toc: true
+#    toc_float: true
+#    theme: lumen
+#    highlight: textmate
+#    include:
+#      after_body: include/footer.html
